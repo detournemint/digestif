@@ -1,5 +1,10 @@
 # Digestif — Action History
 
+## 2026-03-01 — Added Render deployment config
+
+- Created `render.yaml` for Render free-tier hosting (Docker, Oregon region, `/up` health check)
+- SQLite disk persistence commented out (free plan only, uncomment when upgrading)
+
 ## 2026-03-01 — Security audit + TDD hardening
 
 **Tests added** (52 total, all green):

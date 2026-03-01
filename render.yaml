@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: digestif
+    runtime: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /up
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false  # Set this manually in the Render dashboard
+
+    # Upgrade to a paid plan and uncomment to persist SQLite data across deploys:
+    # disk:
+    #   name: sqlite-storage
+    #   mountPath: /rails/storage
+    #   sizeGB: 1
