@@ -1,13 +1,4 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
+# one follows two
 one:
   follower: one
-  follower_type: Follower
-  followed: one
-  followed_type: Followed
-
-two:
-  follower: two
-  follower_type: Follower
   followed: two
-  followed_type: Followed
