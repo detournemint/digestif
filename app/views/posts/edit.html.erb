@@ -1,0 +1,10 @@
+<div class="mx-auto max-w-lg w-full">
+  <div class="text-center mb-8">
+    <h1 class="font-serif text-3xl font-bold">Edit Today's Post</h1>
+    <p class="text-ink-faded text-sm italic mt-1"><%= Date.current.strftime("%B %-d, %Y") %> &mdash; You can edit until tomorrow's digest goes out.</p>
+  </div>
+
+  <hr class="newspaper-rule mb-8">
+
+  <%= render "form", post: @post, url: post_path(@post), submit_label: "Update" %>
+</div>

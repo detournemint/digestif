@@ -1,0 +1,30 @@
+<div class="mx-auto max-w-3xl w-full">
+  <div class="text-center mb-6">
+    <h1 class="font-serif text-3xl font-bold">People</h1>
+    <p class="text-ink-faded text-sm italic mt-1">Find people to follow</p>
+  </div>
+
+  <hr class="newspaper-rule mb-6">
+
+  <% if @users.any? %>
+    <div class="divide-y divide-rule">
+      <% @users.each do |user| %>
+        <div class="flex items-center justify-between py-4">
+          <div>
+            <%= link_to user_path(user), class: "font-serif font-bold text-lg text-ink hover:text-accent transition no-underline" do %>
+              <%= user.username %>
+            <% end %>
+            <p class="text-xs text-ink-faded italic"><%= user.followers.count %> followers &middot; <%= user.posts.count %> posts</p>
+          </div>
+          <% if Current.user.following?(user) %>
+            <%= button_to "Unfollow", user_follow_path(user), method: :delete, class: "border border-rule text-ink-light hover:bg-parchment font-serif text-sm py-1.5 px-4 cursor-pointer transition tracking-wide" %>
+          <% else %>
+            <%= button_to "Follow", user_follow_path(user), method: :post, class: "bg-ink hover:bg-ink-light text-cream font-serif text-sm py-1.5 px-4 cursor-pointer transition tracking-wide" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center text-ink-faded py-16 italic font-serif text-lg">No other users yet. Invite some friends!</p>
+  <% end %>
+</div>

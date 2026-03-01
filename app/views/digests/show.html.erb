@@ -1,0 +1,45 @@
+<div class="mx-auto max-w-3xl w-full">
+  <div class="text-center mb-6">
+    <p class="text-ink-faded text-sm uppercase tracking-widest"><%= Date.yesterday.strftime("%A") %></p>
+    <h2 class="font-serif text-3xl font-bold mt-1"><%= Date.yesterday.strftime("%B %-d, %Y") %></h2>
+    <p class="text-ink-faded text-sm mt-1">Yesterday's posts from the people you follow</p>
+  </div>
+
+  <hr class="newspaper-rule mb-6">
+
+  <% if @todays_post %>
+    <div class="mb-8 border border-rule bg-parchment px-6 py-5">
+      <div class="flex items-center justify-between mb-2">
+        <p class="font-serif text-xs uppercase tracking-widest text-ink-faded">Your post today</p>
+        <%= link_to "Edit", edit_post_path(@todays_post), class: "text-xs text-accent hover:underline" %>
+      </div>
+      <p class="text-ink leading-relaxed whitespace-pre-wrap"><%= @todays_post.body %></p>
+      <p class="text-ink-faded text-xs mt-2 italic">Will appear in your followers' digest tomorrow</p>
+    </div>
+  <% end %>
+
+  <% if @posts.any? %>
+    <div class="columns-1 md:columns-2 gap-8">
+      <% @posts.each_with_index do |post, i| %>
+        <div class="break-inside-avoid mb-6">
+          <% if i > 0 %><hr class="newspaper-rule-thin mb-4"><% end %>
+          <p class="font-serif font-bold text-lg mb-1">
+            <%= link_to user_path(post.user), class: "text-ink hover:text-accent transition no-underline" do %>
+              <%= post.user.username %>
+            <% end %>
+          </p>
+          <p class="text-ink leading-relaxed whitespace-pre-wrap font-body"><%= post.body %></p>
+          <p class="text-ink-faded text-xs mt-2 italic"><%= post.published_at.strftime("%-I:%M %p") %></p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-16">
+      <p class="font-serif text-xl text-ink-faded italic">Nothing in your digest yet.</p>
+      <p class="text-ink-faded mt-2 text-sm">
+        <%= link_to "Find people to follow", users_path, class: "text-accent hover:underline" %>
+        and their posts will show up here tomorrow.
+      </p>
+    </div>
+  <% end %>
+</div>

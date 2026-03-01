@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Digestif" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Digestif">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen bg-cream">
+    <% if authenticated? %>
+      <header class="max-w-4xl mx-auto px-6 pt-6">
+        <div class="text-center">
+          <%= link_to root_path, class: "no-underline" do %>
+            <h1 class="font-serif text-5xl font-black tracking-tight text-ink uppercase" style="letter-spacing: 0.15em;">Digestif</h1>
+          <% end %>
+          <p class="text-ink-faded text-sm mt-1 italic font-body">One post per day. No more, no less.</p>
+        </div>
+        <hr class="newspaper-double-rule mt-4">
+        <nav class="flex items-center justify-between py-2 text-sm">
+          <div class="flex items-center gap-6">
+            <%= link_to "Digest", root_path, class: "text-ink-light hover:text-accent transition font-medium" %>
+            <%= link_to "People", users_path, class: "text-ink-light hover:text-accent transition font-medium" %>
+          </div>
+          <div class="flex items-center gap-4">
+            <% if Current.user.posted_today? %>
+              <%= link_to "Edit post", edit_post_path(Current.user.todays_post), class: "text-ink-faded hover:text-accent text-sm italic" %>
+            <% else %>
+              <%= link_to "Write today's post", new_post_path, class: "text-accent hover:underline font-semibold text-sm" %>
+            <% end %>
+            <span class="text-ink-faded">|</span>
+            <%= link_to "@#{Current.user.username}", user_path(Current.user), class: "text-ink-faded hover:text-accent text-sm transition" %>
+            <%= button_to "Sign out", session_path, method: :delete, class: "text-ink-faded hover:text-ink text-sm cursor-pointer underline" %>
+          </div>
+        </nav>
+        <hr class="newspaper-rule">
+      </header>
+    <% end %>
+
+    <% if flash[:notice] %>
+      <div class="max-w-4xl mx-auto px-6 mt-4">
+        <p class="text-center text-sm italic text-ink-light border border-rule bg-parchment px-4 py-2"><%= flash[:notice] %></p>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="max-w-4xl mx-auto px-6 mt-4">
+        <p class="text-center text-sm italic text-accent border border-accent/30 bg-red-50 px-4 py-2"><%= flash[:alert] %></p>
+      </div>
+    <% end %>
+
+    <main class="max-w-4xl mx-auto mt-6 px-6 pb-16">
+      <%= yield %>
+    </main>
+
+    <footer class="max-w-4xl mx-auto px-6 pb-8">
+      <hr class="newspaper-rule">
+      <p class="text-center text-xs text-ink-faded mt-3 italic">Est. 2026 &mdash; A slower kind of social.</p>
+    </footer>
+  </body>
+</html>

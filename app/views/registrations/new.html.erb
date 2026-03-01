@@ -1,0 +1,48 @@
+<div class="mx-auto max-w-sm w-full">
+  <div class="text-center mb-8">
+    <h1 class="font-serif text-5xl font-black tracking-tight uppercase" style="letter-spacing: 0.15em;">Digestif</h1>
+    <p class="text-ink-faded text-sm italic mt-2">One post per day. No more, no less.</p>
+    <hr class="newspaper-double-rule mt-4">
+  </div>
+
+  <h2 class="font-serif text-xl font-bold text-center mb-6">Become a Contributor</h2>
+
+  <%= form_with model: @user, url: registration_path, class: "space-y-4" do |f| %>
+    <% if @user.errors.any? %>
+      <div class="border border-accent/30 bg-red-50 px-4 py-3 mb-2">
+        <% @user.errors.full_messages.each do |msg| %>
+          <p class="text-accent text-sm italic"><%= msg %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :username, "Pen Name", class: "block text-xs uppercase tracking-widest text-ink-faded mb-1 font-serif" %>
+      <%= f.text_field :username, class: "w-full border border-rule bg-cream px-3 py-2 font-body focus:outline-none focus:border-rule-dark", autofocus: true %>
+    </div>
+
+    <div>
+      <%= f.label :email_address, "Email Address", class: "block text-xs uppercase tracking-widest text-ink-faded mb-1 font-serif" %>
+      <%= f.email_field :email_address, class: "w-full border border-rule bg-cream px-3 py-2 font-body focus:outline-none focus:border-rule-dark" %>
+    </div>
+
+    <div>
+      <%= f.label :password, class: "block text-xs uppercase tracking-widest text-ink-faded mb-1 font-serif" %>
+      <%= f.password_field :password, class: "w-full border border-rule bg-cream px-3 py-2 font-body focus:outline-none focus:border-rule-dark" %>
+    </div>
+
+    <div>
+      <%= f.label :password_confirmation, "Confirm Password", class: "block text-xs uppercase tracking-widest text-ink-faded mb-1 font-serif" %>
+      <%= f.password_field :password_confirmation, class: "w-full border border-rule bg-cream px-3 py-2 font-body focus:outline-none focus:border-rule-dark" %>
+    </div>
+
+    <%= f.submit "Register", class: "w-full bg-ink hover:bg-ink-light text-cream font-serif font-bold py-2.5 px-4 cursor-pointer transition text-sm tracking-widest uppercase" %>
+  <% end %>
+
+  <div class="mt-6 text-center">
+    <hr class="newspaper-rule-thin">
+    <p class="text-sm text-ink-faded pt-2">
+      Already a contributor? <%= link_to "Sign in", new_session_path, class: "text-accent hover:underline font-medium" %>
+    </p>
+  </div>
+</div>

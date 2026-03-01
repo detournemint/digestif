@@ -1,0 +1,16 @@
+<%= form_with model: post, url: url, class: "space-y-6" do |f| %>
+  <% if post.errors.any? %>
+    <div class="border border-accent/30 bg-red-50 px-4 py-3">
+      <% post.errors.full_messages.each do |msg| %>
+        <p class="text-accent text-sm italic"><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.text_area :body, rows: 8, maxlength: 500, placeholder: "What's on your mind today?", class: "w-full border border-rule bg-cream px-4 py-3 font-body text-ink leading-relaxed focus:outline-none focus:border-rule-dark resize-none text-lg", style: "font-family: var(--font-body)" %>
+    <p class="text-right text-xs text-ink-faded mt-1 italic">500 characters max</p>
+  </div>
+
+  <%= f.submit submit_label, class: "w-full bg-ink hover:bg-ink-light text-cream font-serif font-bold py-3 px-4 cursor-pointer transition text-lg tracking-wide uppercase" %>
+<% end %>

@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", "Georgia", "Times New Roman", serif;
+  --font-body: "Lora", "Georgia", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --color-cream: #faf6f1;
+  --color-parchment: #f0e8dd;
+  --color-ink: #1a1a1a;
+  --color-ink-light: #4a4a4a;
+  --color-ink-faded: #8a8a7a;
+  --color-rule: #c4b8a8;
+  --color-rule-dark: #8a7e6e;
+  --color-accent: #8b0000;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.newspaper-rule {
+  border: none;
+  border-top: 2px solid var(--color-rule-dark);
+  margin: 0;
+}
+
+.newspaper-rule-thin {
+  border: none;
+  border-top: 1px solid var(--color-rule);
+  margin: 0;
+}
+
+.newspaper-double-rule {
+  border: none;
+  border-top: 3px double var(--color-rule-dark);
+  margin: 0;
+}

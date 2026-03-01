@@ -1,0 +1,92 @@
+<div class="mx-auto max-w-3xl w-full">
+  <div class="text-center mb-2">
+    <h1 class="font-serif text-4xl font-bold"><%= @user.display_name.presence || @user.username %></h1>
+    <p class="text-ink-faded text-sm mt-1">@<%= @user.username %></p>
+
+    <% if @user.bio.present? %>
+      <p class="text-ink mt-3 max-w-md mx-auto leading-relaxed"><%= @user.bio %></p>
+    <% end %>
+
+    <div class="flex justify-center gap-4 mt-3 text-sm text-ink-faded">
+      <% if @user.location.present? %>
+        <span><%= @user.location %></span>
+        <span class="text-rule">&middot;</span>
+      <% end %>
+      <span><strong class="text-ink"><%= @user.posts.count %></strong> posts</span>
+    </div>
+
+    <% if @user.interests.present? %>
+      <div class="flex flex-wrap justify-center gap-2 mt-3">
+        <% @user.interests.split(",").map(&:strip).reject(&:blank?).each do |interest| %>
+          <span class="text-xs border border-rule text-ink-faded px-2 py-0.5 font-serif"><%= interest %></span>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="mt-4">
+      <% if @user == Current.user %>
+        <%= link_to "Edit profile", edit_profile_path, class: "text-sm text-accent hover:underline" %>
+      <% else %>
+        <% if Current.user.following?(@user) %>
+          <%= button_to "Unfollow", user_follow_path(@user), method: :delete, class: "border border-rule text-ink-light hover:bg-parchment font-serif text-sm py-1.5 px-5 cursor-pointer transition tracking-wide" %>
+        <% else %>
+          <%= button_to "Follow", user_follow_path(@user), method: :post, class: "bg-ink hover:bg-ink-light text-cream font-serif text-sm py-1.5 px-5 cursor-pointer transition tracking-wide" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <hr class="newspaper-double-rule my-6">
+
+  <%# Followers / Following %>
+  <div class="grid grid-cols-2 gap-8 mb-8">
+    <div>
+      <h3 class="font-serif text-xs uppercase tracking-widest text-ink-faded mb-3">Followers &middot; <%= @followers.count %></h3>
+      <% if @followers.any? %>
+        <div class="space-y-2">
+          <% @followers.each do |follower| %>
+            <%= link_to user_path(follower), class: "block text-sm text-ink hover:text-accent transition no-underline" do %>
+              <span class="font-serif font-semibold"><%= follower.display_name.presence || follower.username %></span>
+              <span class="text-ink-faded">@<%= follower.username %></span>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-sm text-ink-faded italic">No followers yet</p>
+      <% end %>
+    </div>
+
+    <div>
+      <h3 class="font-serif text-xs uppercase tracking-widest text-ink-faded mb-3">Following &middot; <%= @following.count %></h3>
+      <% if @following.any? %>
+        <div class="space-y-2">
+          <% @following.each do |followed| %>
+            <%= link_to user_path(followed), class: "block text-sm text-ink hover:text-accent transition no-underline" do %>
+              <span class="font-serif font-semibold"><%= followed.display_name.presence || followed.username %></span>
+              <span class="text-ink-faded">@<%= followed.username %></span>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-sm text-ink-faded italic">Not following anyone yet</p>
+      <% end %>
+    </div>
+  </div>
+
+  <hr class="newspaper-rule-thin mb-6">
+
+  <h3 class="font-serif text-xs uppercase tracking-widest text-ink-faded mb-4">Recent Posts</h3>
+
+  <% if @posts.any? %>
+    <div class="divide-y divide-rule">
+      <% @posts.each do |post| %>
+        <div class="py-5">
+          <p class="text-ink leading-relaxed whitespace-pre-wrap font-body"><%= post.body %></p>
+          <p class="text-ink-faded text-xs mt-2 italic"><%= post.published_at.strftime("%B %-d, %Y") %></p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center text-ink-faded py-12 italic font-serif">No posts yet.</p>
+  <% end %>
+</div>

@@ -1,0 +1,33 @@
+<div class="mx-auto max-w-sm w-full">
+  <div class="text-center mb-8">
+    <h1 class="font-serif text-5xl font-black tracking-tight uppercase" style="letter-spacing: 0.15em;">Digestif</h1>
+    <p class="text-ink-faded text-sm italic mt-2">One post per day. No more, no less.</p>
+    <hr class="newspaper-double-rule mt-4">
+  </div>
+
+  <h2 class="font-serif text-xl font-bold text-center mb-6">Sign In</h2>
+
+  <%= form_with url: session_url, class: "space-y-4" do |form| %>
+    <div>
+      <label class="block text-xs uppercase tracking-widest text-ink-faded mb-1 font-serif">Email Address</label>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address], class: "w-full border border-rule bg-cream px-3 py-2 font-body focus:outline-none focus:border-rule-dark" %>
+    </div>
+
+    <div>
+      <label class="block text-xs uppercase tracking-widest text-ink-faded mb-1 font-serif">Password</label>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72, class: "w-full border border-rule bg-cream px-3 py-2 font-body focus:outline-none focus:border-rule-dark" %>
+    </div>
+
+    <%= form.submit "Enter", class: "w-full bg-ink hover:bg-ink-light text-cream font-serif font-bold py-2.5 px-4 cursor-pointer transition text-sm tracking-widest uppercase" %>
+  <% end %>
+
+  <div class="mt-6 text-center space-y-2">
+    <hr class="newspaper-rule-thin">
+    <p class="text-sm text-ink-faded pt-2">
+      New correspondent? <%= link_to "Register", new_registration_path, class: "text-accent hover:underline font-medium" %>
+    </p>
+    <p class="text-sm text-ink-faded">
+      <%= link_to "Forgot password?", new_password_path, class: "text-ink-faded hover:text-accent" %>
+    </p>
+  </div>
+</div>
