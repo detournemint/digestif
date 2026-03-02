@@ -18,6 +18,20 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "New Name", users(:one).reload.display_name
   end
 
+  test "can upload an avatar" do
+    sign_in_as(users(:one))
+    avatar = fixture_file_upload("avatar.png", "image/png")
+    patch profile_path, params: { user: { avatar: avatar } }
+    assert users(:one).reload.avatar.attached?
+  end
+
+  test "rejects non-image avatar" do
+    sign_in_as(users(:one))
+    bad_file = fixture_file_upload("not_an_image.txt", "text/plain")
+    patch profile_path, params: { user: { avatar: bad_file } }
+    assert_response :unprocessable_entity
+  end
+
   test "profile update cannot change email or password" do
     sign_in_as(users(:one))
     original_digest = users(:one).password_digest

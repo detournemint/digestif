@@ -45,7 +45,12 @@
               <%= link_to "Write today's post", new_post_path, class: "text-accent hover:underline font-semibold text-sm" %>
             <% end %>
             <span class="text-ink-faded">|</span>
-            <%= link_to "@#{Current.user.username}", user_path(Current.user), class: "text-ink-faded hover:text-accent text-sm transition" %>
+            <%= link_to user_path(Current.user), class: "flex items-center gap-1.5 text-ink-faded hover:text-accent text-sm transition" do %>
+              <% if Current.user.avatar.attached? && Current.user.avatar.blob.persisted? %>
+                <%= image_tag Current.user.avatar, class: "w-6 h-6 rounded-full object-cover", alt: Current.user.username %>
+              <% end %>
+              @<%= Current.user.username %>
+            <% end %>
             <%= button_to "Sign out", session_path, method: :delete, class: "text-ink-faded hover:text-ink text-sm cursor-pointer underline" %>
           </div>
         </nav>

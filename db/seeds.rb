@@ -17,12 +17,12 @@ users_data = [
 users = users_data.map do |data|
   User.find_or_create_by!(email_address: data[:email_address]) do |u|
     u.username = data[:username]
-    u.password = "password123"
-    u.password_confirmation = "password123"
+    u.password = "password1234"
+    u.password_confirmation = "password1234"
   end
 end
 
-puts "  Created #{users.size} users (password: password123)"
+puts "  Created #{users.size} users (password: password1234)"
 
 # Posts content
 posts_content = [
@@ -91,4 +91,4 @@ users.each do |user|
 end
 
 puts "  Created #{Follow.count} follow relationships"
-puts "Done! Sign in with any user (e.g. alice@example.com / password123)"
+puts "Done! Sign in with any user (e.g. alice@example.com / password1234)"

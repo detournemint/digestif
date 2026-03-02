@@ -30,6 +30,25 @@ class UserTest < ActiveSupport::TestCase
     assert user.errors[:password].any?
   end
 
+  test "avatar must be an image file" do
+    users(:one).avatar.attach(
+      io: StringIO.new("not an image"),
+      filename: "test.txt",
+      content_type: "text/plain"
+    )
+    assert_not users(:one).valid?
+    assert_includes users(:one).errors[:avatar], "must be an image file"
+  end
+
+  test "avatar accepts image files" do
+    users(:one).avatar.attach(
+      io: File.open(Rails.root.join("test/fixtures/files/avatar.png")),
+      filename: "avatar.png",
+      content_type: "image/png"
+    )
+    assert users(:one).valid?
+  end
+
   test "password with 12 or more characters is valid" do
     user = User.new(
       email_address: "test@example.com",

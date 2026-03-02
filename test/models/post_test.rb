@@ -34,6 +34,27 @@ class PostTest < ActiveSupport::TestCase
     assert_includes second.errors[:base], "You can only post once per day. Come back tomorrow!"
   end
 
+  test "post image must be an image file" do
+    post = @user.posts.build(body: "Hello")
+    post.image.attach(
+      io: StringIO.new("not an image"),
+      filename: "test.txt",
+      content_type: "text/plain"
+    )
+    assert_not post.valid?
+    assert_includes post.errors[:image], "must be an image file"
+  end
+
+  test "post image accepts image files" do
+    post = @user.posts.build(body: "Hello")
+    post.image.attach(
+      io: File.open(Rails.root.join("test/fixtures/files/avatar.png")),
+      filename: "photo.png",
+      content_type: "image/png"
+    )
+    assert post.valid?
+  end
+
   test "different users can each post once per day" do
     @user.posts.create!(body: "User one's post")
     other_user = users(:two)

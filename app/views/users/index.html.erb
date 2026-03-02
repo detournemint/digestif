@@ -10,11 +10,20 @@
     <div class="divide-y divide-rule">
       <% @users.each do |user| %>
         <div class="flex items-center justify-between py-4">
-          <div>
-            <%= link_to user_path(user), class: "font-serif font-bold text-lg text-ink hover:text-accent transition no-underline" do %>
-              <%= user.username %>
+          <div class="flex items-center gap-3">
+            <% if user.avatar.attached? %>
+              <%= image_tag user.avatar, class: "w-10 h-10 rounded-full object-cover flex-shrink-0", alt: user.username %>
+            <% else %>
+              <div class="w-10 h-10 rounded-full bg-parchment border border-rule flex items-center justify-center flex-shrink-0">
+                <span class="font-serif font-bold text-ink-faded text-sm"><%= user.username.first.upcase %></span>
+              </div>
             <% end %>
-            <p class="text-xs text-ink-faded italic"><%= user.followers.count %> followers &middot; <%= user.posts.count %> posts</p>
+            <div>
+              <%= link_to user_path(user), class: "font-serif font-bold text-lg text-ink hover:text-accent transition no-underline" do %>
+                <%= user.display_name.presence || user.username %>
+              <% end %>
+              <p class="text-xs text-ink-faded italic"><%= user.followers.count %> followers &middot; <%= user.posts.count %> posts</p>
+            </div>
           </div>
           <% if Current.user.following?(user) %>
             <%= button_to "Unfollow", user_follow_path(user), method: :delete, class: "border border-rule text-ink-light hover:bg-parchment font-serif text-sm py-1.5 px-4 cursor-pointer transition tracking-wide" %>

@@ -55,6 +55,14 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to edit_post_path(todays_post)
   end
 
+  test "can attach an image to a post" do
+    sign_in_as(users(:one))
+    image = fixture_file_upload("avatar.png", "image/png")
+    post posts_path, params: { post: { body: "A post with a photo.", image: image } }
+    assert_redirected_to root_path
+    assert Post.last.image.attached?
+  end
+
   test "create a valid post" do
     sign_in_as(users(:one))
     assert_difference "Post.count", 1 do

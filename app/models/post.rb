@@ -1,8 +1,10 @@
 class Post < ApplicationRecord
   belongs_to :user
+  has_one_attached :image
 
   validates :body, presence: true, length: { maximum: 500 }
   validate :one_post_per_day, on: :create
+  validate :image_is_image, if: -> { image.attached? }
 
   before_create -> { self.published_at = Time.current }
 
@@ -10,6 +12,15 @@ class Post < ApplicationRecord
   scope :recent, -> { order(published_at: :desc) }
 
   private
+
+  def image_is_image
+    unless image.blob.content_type.start_with?("image/")
+      errors.add(:image, "must be an image file")
+    end
+    if image.blob.byte_size > 10.megabytes
+      errors.add(:image, "must be smaller than 10MB")
+    end
+  end
 
   def one_post_per_day
     if user&.posted_today?

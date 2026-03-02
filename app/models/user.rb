@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
+  has_one_attached :avatar
   has_many :sessions, dependent: :destroy
   has_many :posts, dependent: :destroy
 
@@ -14,8 +15,22 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: { case_sensitive: false },
             format: { with: /\A[a-zA-Z0-9_]+\z/, message: "only allows letters, numbers, and underscores" }
   validates :password, length: { minimum: 12 }, allow_nil: true
+  validate :avatar_is_image, if: -> { avatar.attached? }
 
   normalizes :username, with: ->(u) { u.strip }
+
+  private
+
+  def avatar_is_image
+    unless avatar.blob.content_type.start_with?("image/")
+      errors.add(:avatar, "must be an image file")
+    end
+    if avatar.blob.byte_size > 5.megabytes
+      errors.add(:avatar, "must be smaller than 5MB")
+    end
+  end
+
+  public
 
   def following?(user)
     following.include?(user)

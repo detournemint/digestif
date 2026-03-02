@@ -1,5 +1,19 @@
 # Digestif — Action History
 
+## 2026-03-01 — Image uploading (avatars + post photos)
+
+- Installed Active Storage (migration + tables)
+- `User` — `has_one_attached :avatar`, validates image type and 5MB max
+- `Post` — `has_one_attached :image`, validates image type and 10MB max
+- `ProfilesController` — permits `:avatar` param
+- `PostsController` — permits `:image` param
+- Eager loading added in `DigestsController` and `UsersController` to prevent N+1 queries
+- Views updated: avatar in nav, profile header, people list, followers/following lists; post images in digest and profile
+- `storage.yml` — added commented Cloudflare R2 config for production cloud storage
+- Fixed `db/seeds.rb` password ("password123" → "password1234") to meet 12-char minimum
+- Added `blob.persisted?` guard in layout + profile edit view to prevent signed_id errors on validation failure
+- Tests: avatar type/size validation, post image validation, avatar upload via controller
+
 ## 2026-03-01 — Added Render deployment config
 
 - Created `render.yaml` for Render free-tier hosting (Docker, Oregon region, `/up` health check)

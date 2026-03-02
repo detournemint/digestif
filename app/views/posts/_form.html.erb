@@ -1,4 +1,4 @@
-<%= form_with model: post, url: url, class: "space-y-6" do |f| %>
+<%= form_with model: post, url: url, multipart: true, class: "space-y-6" do |f| %>
   <% if post.errors.any? %>
     <div class="border border-accent/30 bg-red-50 px-4 py-3">
       <% post.errors.full_messages.each do |msg| %>
@@ -10,6 +10,15 @@
   <div>
     <%= f.text_area :body, rows: 8, maxlength: 500, placeholder: "What's on your mind today?", class: "w-full border border-rule bg-cream px-4 py-3 font-body text-ink leading-relaxed focus:outline-none focus:border-rule-dark resize-none text-lg", style: "font-family: var(--font-body)" %>
     <p class="text-right text-xs text-ink-faded mt-1 italic">500 characters max</p>
+  </div>
+
+  <div>
+    <%= f.label :image, "Photo (optional)", class: "block text-xs uppercase tracking-widest text-ink-faded mb-2 font-serif" %>
+    <% if post.image.attached? %>
+      <%= image_tag post.image, class: "max-w-full mb-3 border border-rule", alt: "Post image" %>
+    <% end %>
+    <%= f.file_field :image, accept: "image/*", class: "block text-sm text-ink-faded file:mr-3 file:py-1 file:px-3 file:border file:border-rule file:bg-cream file:text-ink file:font-serif file:text-xs file:cursor-pointer hover:file:bg-parchment" %>
+    <p class="text-xs text-ink-faded mt-1 italic">JPEG, PNG, GIF, or WebP — max 10MB</p>
   </div>
 
   <%= f.submit submit_label, class: "w-full bg-ink hover:bg-ink-light text-cream font-serif font-bold py-3 px-4 cursor-pointer transition text-lg tracking-wide uppercase" %>
